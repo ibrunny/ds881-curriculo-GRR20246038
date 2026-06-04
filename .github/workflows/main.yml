@@ -32,12 +32,15 @@ jobs:
       - name: Lint HTML
         run: htmlhint src/index.html --config .htmlhintrc
 
-      - name: Install stylelint
-        run: npm install -g stylelint stylelint-config-standard
+ - name: Install stylelint
+        run: npm install -g stylelint stylelint-config-recommended
+
+      - name: Create stylelint config
+        run: echo '{"extends":"stylelint-config-recommended"}' > .stylelintrc.json
 
       - name: Lint CSS
-        run: stylelint "src/**/*.css" --config '{"extends":"stylelint-config-standard"}'
-
+        run: stylelint "src/**/*.css"
+        
   # ── Job 2: Build ────────────────────────────────────────────────────
   build:
     name: Build & Validate
