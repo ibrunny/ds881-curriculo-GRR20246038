@@ -1,0 +1,9 @@
+services:
+  curriculo:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      # Bind mount: qualquer mudança em ./src reflete imediatamente no container
+      - ./src:/usr/share/nginx/html:ro
+    restart: unless-stopped
