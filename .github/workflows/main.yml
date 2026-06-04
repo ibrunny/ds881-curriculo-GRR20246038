@@ -6,19 +6,16 @@ on:
   pull_request:
     branches: [main]
 
-# Permissão para publicar no GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Garante que apenas um deploy roda por vez
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # ── Job 1: Lint / Static Analysis ──────────────────────────────────
   lint:
     name: Lint & Static Analysis
     runs-on: ubuntu-latest
@@ -32,16 +29,14 @@ jobs:
       - name: Lint HTML
         run: htmlhint src/index.html --config .htmlhintrc
 
- - name: Install stylelint
+      - name: Install stylelint
         run: npm install -g stylelint stylelint-config-recommended
 
-      - name: Create stylelint config
-        run: echo '{"extends":"stylelint-config-recommended"}' > .stylelintrc.json
-
       - name: Lint CSS
-        run: stylelint "src/**/*.css"
-        
-  # ── Job 2: Build ────────────────────────────────────────────────────
+        run: |
+          echo '{"extends":"stylelint-config-recommended"}' > .stylelintrc.json
+          stylelint "src/**/*.css"
+
   build:
     name: Build & Validate
     runs-on: ubuntu-latest
@@ -53,17 +48,17 @@ jobs:
       - name: Build Docker image
         run: docker build -t curriculo:ci .
 
-      - name: Smoke test (container starts and serves)
+      - name: Smoke test
         run: |
           docker run -d -p 8080:80 --name curriculo-test curriculo:ci
           sleep 3
           STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://localhost:8080)
           echo "HTTP Status: $STATUS"
           if [ "$STATUS" != "200" ]; then
-            echo "❌ Container não respondeu com 200!"
+            echo "Container nao respondeu com 200!"
             exit 1
           fi
-          echo "✅ Build OK"
+          echo "Build OK"
           docker stop curriculo-test
 
       - name: Upload artifact for Pages
@@ -72,7 +67,6 @@ jobs:
         with:
           path: src/
 
-  # ── Job 3: Deploy (apenas na main) ─────────────────────────────────
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
