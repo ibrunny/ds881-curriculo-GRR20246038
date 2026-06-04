@@ -2,7 +2,7 @@
 
 > Currículo online desenvolvido como projeto individual para a disciplina **DS881**.
 
-🔗 **[Ver currículo em produção](https://ibrunny.github.io/ds881-curriculo-SEU_GRR_AQUI)**
+🔗 **[Ver currículo em produção](https://ibrunny.github.io/ds881-curriculo-20246038)**
 
 ---
 
