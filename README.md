@@ -24,3 +24,6 @@ docker compose up --build
 
 # 3. Acesse no navegador
 # http://localhost:8080
+
+## Branch Protection
+![Branch Protection](docs/branch-protection.png)
